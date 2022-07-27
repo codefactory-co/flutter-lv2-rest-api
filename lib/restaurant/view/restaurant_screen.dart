@@ -20,7 +20,7 @@ class RestaurantScreen extends ConsumerWidget {
     if (data.length == 0) {
       return Center(
         child: CircularProgressIndicator(),
-      );
+      ); 
     }
 
     return Padding(
