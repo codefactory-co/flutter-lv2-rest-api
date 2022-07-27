@@ -1,6 +1,20 @@
 import 'package:actual/common/const/data.dart';
+import 'package:actual/common/secure_storage/secure_storage.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final dioProvider = Provider<Dio>((ref) {
+  final dio = Dio();
+
+  final storage = ref.watch(secureStorageProvider);
+
+  dio.interceptors.add(
+    CustomInterceptor(storage: storage),
+  );
+
+  return dio;
+});
 
 class CustomInterceptor extends Interceptor {
   final FlutterSecureStorage storage;
@@ -15,10 +29,11 @@ class CustomInterceptor extends Interceptor {
   // 실제 토큰을 가져와서 (storage에서) authorization: bearer $token으로
   // 헤더를 변경한다.
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     print('[REQ] [${options.method}] ${options.uri}');
 
-    if(options.headers['accessToken'] == 'true'){
+    if (options.headers['accessToken'] == 'true') {
       // 헤더 삭제
       options.headers.remove('accessToken');
 
@@ -30,7 +45,7 @@ class CustomInterceptor extends Interceptor {
       });
     }
 
-    if(options.headers['refreshToken'] == 'true'){
+    if (options.headers['refreshToken'] == 'true') {
       // 헤더 삭제
       options.headers.remove('refreshToken');
 
@@ -48,7 +63,8 @@ class CustomInterceptor extends Interceptor {
   // 2) 응답을 받을때
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print('[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
+    print(
+        '[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
 
     return super.onResponse(response, handler);
   }
@@ -65,7 +81,7 @@ class CustomInterceptor extends Interceptor {
 
     // refreshToken 아예 없으면
     // 당연히 에러를 던진다
-    if(refreshToken == null){
+    if (refreshToken == null) {
       // 에러를 던질때는 handler.reject를 사용한다.
       return handler.reject(err);
     }
@@ -73,10 +89,10 @@ class CustomInterceptor extends Interceptor {
     final isStatus401 = err.response?.statusCode == 401;
     final isPathRefresh = err.requestOptions.path == '/auth/token';
 
-    if(isStatus401 && !isPathRefresh){
+    if (isStatus401 && !isPathRefresh) {
       final dio = Dio();
 
-      try{
+      try {
         final resp = await dio.post(
           'http://$ip/auth/token',
           options: Options(
@@ -101,7 +117,7 @@ class CustomInterceptor extends Interceptor {
         final response = await dio.fetch(options);
 
         return handler.resolve(response);
-      }on DioError catch(e){
+      } on DioError catch (e) {
         return handler.reject(e);
       }
     }
