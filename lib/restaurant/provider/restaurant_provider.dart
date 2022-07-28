@@ -4,6 +4,17 @@ import 'package:actual/restaurant/model/restaurant_model.dart';
 import 'package:actual/restaurant/repository/restaurant_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final restaurantDetailProvider =
+    Provider.family<RestaurantModel?, String>((ref, id) {
+  final state = ref.watch(restaurantProvider);
+
+  if (state is! CursorPagination<RestaurantModel>) {
+    return null;
+  }
+
+  return state.data.firstWhere((element) => element.id == id);
+});
+
 final restaurantProvider =
     StateNotifierProvider<RestaurantStateNotifier, CursorPaginationBase>(
   (ref) {
@@ -34,7 +45,7 @@ class RestaurantStateNotifier extends StateNotifier<CursorPaginationBase> {
     // true - CursorPaginationLoading()
     bool forceRefetch = false,
   }) async {
-    try{
+    try {
       // 5가지 가능성
       // State의 상태
       // [상태가]
@@ -117,10 +128,10 @@ class RestaurantStateNotifier extends StateNotifier<CursorPaginationBase> {
             ...resp.data,
           ],
         );
-      }else{
+      } else {
         state = resp;
       }
-    }catch(e){
+    } catch (e) {
       state = CursorPaginationError(message: '데이터를 가져오지 못했습니다.');
     }
   }
