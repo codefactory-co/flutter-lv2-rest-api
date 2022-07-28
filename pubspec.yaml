@@ -40,6 +40,7 @@ dependencies:
   retrofit: '>=3.0.0 <4.0.0'
   logger: any  #for logging purpose
   flutter_riverpod: ^1.0.4
+  skeletons: ^0.0.3
 
 dev_dependencies:
   flutter_test:
