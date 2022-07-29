@@ -5,15 +5,16 @@ import 'package:actual/common/repository/base_pagination_repository.dart';
 import 'package:actual/restaurant/repository/restaurant_rating_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PaginationProvider<
-T extends IModelWithId,
-U extends IBasePaginationRepository<T>
-> extends StateNotifier<CursorPaginationBase> {
+class PaginationProvider<T extends IModelWithId,
+        U extends IBasePaginationRepository<T>>
+    extends StateNotifier<CursorPaginationBase> {
   final U repository;
 
   PaginationProvider({
     required this.repository,
-  }) : super(CursorPaginationLoading());
+  }) : super(CursorPaginationLoading()){
+    paginate();
+  }
 
   Future<void> paginate({
     int fetchCount = 20,
@@ -111,7 +112,9 @@ U extends IBasePaginationRepository<T>
       } else {
         state = resp;
       }
-    } catch (e) {
+    } catch (e, stack) {
+      print(e);
+      print(stack);
       state = CursorPaginationError(message: '데이터를 가져오지 못했습니다.');
     }
   }
