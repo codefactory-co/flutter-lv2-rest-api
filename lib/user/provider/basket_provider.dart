@@ -23,6 +23,11 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
     required this.repository,
   }) : super([]);
 
+  int get totalPrice => state.fold<int>(
+    0,
+        (p, n) => p + (n.product.price * n.count),
+  );
+
   Future<void> patchBasket() async{
     await repository.patchBasket(
       body: PatchBasketBody(
