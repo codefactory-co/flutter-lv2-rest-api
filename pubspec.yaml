@@ -43,6 +43,7 @@ dependencies:
   skeletons: ^0.0.3
   go_router: ^4.2.2
   badges: ^2.0.3
+  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_test:
