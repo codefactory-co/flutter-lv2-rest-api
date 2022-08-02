@@ -44,6 +44,7 @@ dependencies:
   go_router: ^4.2.2
   badges: ^2.0.3
   uuid: ^3.0.6
+  debounce_throttle: ^2.0.0
 
 dev_dependencies:
   flutter_test:
