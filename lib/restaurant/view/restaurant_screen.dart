@@ -15,7 +15,7 @@ class RestaurantScreen extends StatelessWidget {
           onTap: () {
             context.goNamed(
               RestaurantDetailScreen.routeName,
-              params: {
+              pathParameters: {
                 'rid': model.id,
               },
             );

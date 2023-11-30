@@ -6,10 +6,13 @@ part of 'order_repository.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
 class _OrderRepository implements OrderRepository {
-  _OrderRepository(this._dio, {this.baseUrl});
+  _OrderRepository(
+    this._dio, {
+    this.baseUrl,
+  });
 
   final Dio _dio;
 
@@ -26,11 +29,18 @@ class _OrderRepository implements OrderRepository {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CursorPagination<OrderModel>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<CursorPagination<OrderModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CursorPagination<OrderModel>.fromJson(
       _result.data!,
       (json) => OrderModel.fromJson(json as Map<String, dynamic>),
@@ -46,12 +56,19 @@ class _OrderRepository implements OrderRepository {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<OrderModel>(
-            Options(method: 'POST', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<OrderModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = OrderModel.fromJson(_result.data!);
     return value;
   }

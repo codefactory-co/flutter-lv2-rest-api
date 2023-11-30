@@ -6,10 +6,13 @@ part of 'product_repository.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
 class _ProductRepository implements ProductRepository {
-  _ProductRepository(this._dio, {this.baseUrl});
+  _ProductRepository(
+    this._dio, {
+    this.baseUrl,
+  });
 
   final Dio _dio;
 
@@ -26,11 +29,18 @@ class _ProductRepository implements ProductRepository {
     _headers.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CursorPagination<ProductModel>>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<CursorPagination<ProductModel>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CursorPagination<ProductModel>.fromJson(
       _result.data!,
       (json) => ProductModel.fromJson(json as Map<String, dynamic>),

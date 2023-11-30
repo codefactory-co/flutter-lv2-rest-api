@@ -36,8 +36,7 @@ class CustomInterceptor extends Interceptor {
   // 실제 토큰을 가져와서 (storage에서) authorization: bearer $token으로
   // 헤더를 변경한다.
   @override
-  void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     print('[REQ] [${options.method}] ${options.uri}');
 
     if (options.headers['accessToken'] == 'true') {
@@ -70,8 +69,7 @@ class CustomInterceptor extends Interceptor {
   // 2) 응답을 받을때
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print(
-        '[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
+    print('[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
 
     return super.onResponse(response, handler);
   }

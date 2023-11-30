@@ -5,13 +5,10 @@ import 'package:actual/common/utils/pagination_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-typedef PaginationWidgetBuilder<T extends IModelWithId> = Widget Function(
-    BuildContext context, int index, T model);
+typedef PaginationWidgetBuilder<T extends IModelWithId> = Widget Function(BuildContext context, int index, T model);
 
-class PaginationListView<T extends IModelWithId>
-    extends ConsumerStatefulWidget {
-  final StateNotifierProvider<PaginationProvider, CursorPaginationBase>
-      provider;
+class PaginationListView<T extends IModelWithId> extends ConsumerStatefulWidget {
+  final StateNotifierProvider<PaginationProvider, CursorPaginationBase> provider;
   final PaginationWidgetBuilder<T> itemBuilder;
 
   const PaginationListView({
@@ -21,8 +18,7 @@ class PaginationListView<T extends IModelWithId>
   }) : super(key: key);
 
   @override
-  ConsumerState<PaginationListView> createState() =>
-      _PaginationListViewState<T>();
+  ConsumerState<PaginationListView> createState() => _PaginationListViewState<T>();
 }
 
 class _PaginationListViewState<T extends IModelWithId> extends ConsumerState<PaginationListView> {
@@ -95,10 +91,10 @@ class _PaginationListViewState<T extends IModelWithId> extends ConsumerState<Pag
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: RefreshIndicator(
-        onRefresh: ()async{
+        onRefresh: () async {
           ref.read(widget.provider.notifier).paginate(
-            forceRefetch: true,
-          );
+                forceRefetch: true,
+              );
         },
         child: ListView.separated(
           physics: AlwaysScrollableScrollPhysics(),
@@ -112,9 +108,7 @@ class _PaginationListViewState<T extends IModelWithId> extends ConsumerState<Pag
                   vertical: 8.0,
                 ),
                 child: Center(
-                  child: cp is CursorPaginationFetchingMore
-                      ? CircularProgressIndicator()
-                      : Text('마지막 데이터입니다 ㅠㅠ'),
+                  child: cp is CursorPaginationFetchingMore ? CircularProgressIndicator() : Text('마지막 데이터입니다 ㅠㅠ'),
                 ),
               );
             }

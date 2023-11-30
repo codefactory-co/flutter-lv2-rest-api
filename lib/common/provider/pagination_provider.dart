@@ -35,6 +35,7 @@ U extends IBasePaginationRepository<T>>
 
     paginationThrottle.values.listen(
           (state) {
+            print(state.forceRefetch);
         _throttledPagination(state);
       },
     );
@@ -50,6 +51,7 @@ U extends IBasePaginationRepository<T>>
     // true - CursorPaginationLoading()
     bool forceRefetch = false,
   }) async {
+    print(forceRefetch);
     paginationThrottle.setValue(_PaginationInfo(
       fetchMore: fetchMore,
       fetchCount: fetchCount,
